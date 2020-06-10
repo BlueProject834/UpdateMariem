@@ -5,6 +5,8 @@ import 'package:cvmakerapp/Forms/legend.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../drawer.dart';
+
 
 class TitreCv extends StatelessWidget {
 
@@ -24,7 +26,7 @@ class TitreCv extends StatelessWidget {
         appBar: AppBar(
           title: Text('Titre Cv'),
         ),
-
+        endDrawer: drawer(),
         body: Center(
 
             child: Column(
@@ -40,7 +42,7 @@ class TitreCv extends StatelessWidget {
                 ),
 
                 RaisedButton(
-                  child: Text("j'enregistre et je passe au suivant"),
+                  child: Text("Enregistrer et passer au suivant"),
                   onPressed: () async {
                     titre.title = _titleController.text;
                     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -61,7 +63,18 @@ class TitreCv extends StatelessWidget {
                   },
                 ),
 
+                RaisedButton(
+                  child: Text("Passer au suivant sans enregistrer"),
+                  onPressed: () async {
+                    titre.title = _titleController.text;
 
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LegendCv(legend: newLegend))
+                    );
+                  },
+                ),
 
               ],
             )

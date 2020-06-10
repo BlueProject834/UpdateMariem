@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cvmakerapp/Forms/ProjetCv.dart';
 import 'package:cvmakerapp/classes/Infos.dart';
 import 'package:cvmakerapp/classes/Projet.dart';
-import 'package:cvmakerapp/Forms/ProjetCv.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../drawer.dart';
 
 class InfoCv extends StatelessWidget {
   final db = Firestore.instance;
@@ -43,6 +45,7 @@ class InfoCv extends StatelessWidget {
         appBar: AppBar(
           title: Text('Infos Personnelles'),
         ),
+        endDrawer: drawer(),
         body: Center(
             child: SingleChildScrollView(
           child: Column(
@@ -129,7 +132,7 @@ class InfoCv extends StatelessWidget {
                 ),
               ),
               RaisedButton(
-                child: Text("Suivant"),
+                child: Text("Enregister et passer au suivant"),
                 onPressed: () async {
                   info.nom = _titleController1.text;
                   info.prenom = _titleController2.text;
@@ -151,13 +154,36 @@ class InfoCv extends StatelessWidget {
                       .collection("Cv")
                       .document(uid)
                       .collection("Infos Personnelles")
-                      .document("1").setData(info.toJson());
+                      .document("1")
+                      .setData(info.toJson());
 
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ProjetCv(
-                            projet: newProjet,
+                                projet: newProjet,
+                              )));
+                },
+              ),
+              RaisedButton(
+                child: Text("Passer au suivant sans enregistrer"),
+                onPressed: () async {
+                  info.nom = _titleController1.text;
+                  info.prenom = _titleController2.text;
+                  info.numtel = _titleController3.text;
+                  info.adresse = _titleController4.text;
+                  info.codepostal = _titleController5.text;
+                  info.email = _titleController6.text;
+                  info.datenaissance = _titleController7.text;
+                  info.nationalite = _titleController8.text;
+                  info.etatcivil = _titleController9.text;
+                  info.permis = _titleController10.text;
+
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ProjetCv(
+                                projet: newProjet,
                               )));
                 },
               ),
