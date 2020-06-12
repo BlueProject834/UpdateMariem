@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cvmakerapp/api/cv_api.dart';
 import 'package:cvmakerapp/screens/home.dart';
 import 'package:cvmakerapp/notifier/auth_notifier.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:cvmakerapp/model/user.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -15,6 +17,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _passwordController = new TextEditingController();
@@ -54,11 +57,11 @@ class _LoginState extends State<Login> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: "Nom",
-        labelStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: Colors.black45),
       ),
       keyboardType: TextInputType.text,
-      style: TextStyle(fontSize: 26, color: Colors.white),
-      cursorColor: Colors.white,
+      style: TextStyle(fontSize: 20, color: Colors.black),
+      cursorColor: Colors.black,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Veuillez remplir le champ';
@@ -80,11 +83,11 @@ class _LoginState extends State<Login> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: "Adresse Email",
-        labelStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: Colors.black45),
       ),
       keyboardType: TextInputType.emailAddress,
-      style: TextStyle(fontSize: 26, color: Colors.white),
-      cursorColor: Colors.white,
+      style: TextStyle(fontSize: 20, color: Colors.black),
+      cursorColor: Colors.black,
       validator: (String value) {
         if (value.isEmpty) {
           return 'Veuillez remplir le champ';
@@ -108,10 +111,10 @@ class _LoginState extends State<Login> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: "Mot de passe",
-        labelStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: Colors.black45),
       ),
-      style: TextStyle(fontSize: 26, color: Colors.white),
-      cursorColor: Colors.white,
+      style: TextStyle(fontSize: 20, color: Colors.black),
+      cursorColor: Colors.black,
       obscureText: true,
       controller: _passwordController,
       validator: (String value) {
@@ -131,14 +134,15 @@ class _LoginState extends State<Login> {
     );
   }
 
+
   Widget _buildConfirmPasswordField() {
     return TextFormField(
       decoration: InputDecoration(
         labelText: "Confirmer le mot de passe",
-        labelStyle: TextStyle(color: Colors.white54),
+        labelStyle: TextStyle(color: Colors.black45),
       ),
-      style: TextStyle(fontSize: 26, color: Colors.white),
-      cursorColor: Colors.white,
+      style: TextStyle(fontSize: 20, color: Colors.black),
+      cursorColor: Colors.black,
       obscureText: true,
       validator: (String value) {
         if (_passwordController.text != value) {
@@ -155,24 +159,65 @@ class _LoginState extends State<Login> {
     print("Building login screen");
 
     return Scaffold(
-      body: Container(
+      body:
+ /*    Container(
+        decoration: new BoxDecoration(
+          image: new DecorationImage(
+            image: new AssetImage("assets/images/1.jpg"),
+            fit: BoxFit.cover,),
+        ),*/
+      Container(
         constraints: BoxConstraints.expand(
           height: MediaQuery.of(context).size.height,
         ),
-        decoration: BoxDecoration(color: Color(0xff340560)),
+        decoration: new BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topCenter,
+                colors: [/*Hexcolor('#997A8D')*/Colors.white12, Colors.white12])),
+
         child: Form(
           autovalidate: true,
           key: _formKey,
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.fromLTRB(32, 96, 32, 0),
+              padding: EdgeInsets.fromLTRB(32, 56, 32, 0),
               child: Column(
                 children: <Widget>[
-                  Text(
-                    "Authentification",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 36, color: Colors.white),
-                  ),
+                  _authMode == AuthMode.Signup
+                      ? Container(
+                    child: Text(
+                      "Inscription",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontFamily: "PlayfairDisplay",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 36,
+                          color: Colors.black),
+                    ),
+                  )
+                      : Column(
+                    children: <Widget>[
+                      Text(
+                        "Bienvenue \n",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 40,
+                            fontFamily: "DancingScript",
+                            fontWeight: FontWeight.w700,
+                            color: Hexcolor('#774780')),
+                      ),
+                      Text(
+                        "Authentification",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontFamily: "PlayfairDisplay",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 36,
+                            color: Colors.black
+                        ),
+                      ),
+                    ],),
                   SizedBox(height: 32),
                   _authMode == AuthMode.Signup
                       ? _buildDisplayNameField()
@@ -182,15 +227,16 @@ class _LoginState extends State<Login> {
                   _authMode == AuthMode.Signup
                       ? _buildConfirmPasswordField()
                       : Container(),
-                  SizedBox(height: 40),
+                  SizedBox(height: 60),
 
                   ButtonTheme(
                     minWidth: 200,
-                    child: RaisedButton(
-                      color: Colors.white12,
+                    child: Container(
+                      width: 300.0,
+                      child:
+                    RaisedButton(
+                      color: Hexcolor("#774780"),
                       padding: EdgeInsets.all(10.0),
-                     // onPressed: () => _submitForm(),
-
                       onPressed: () {
                         _submitForm();
                         Navigator.push(
@@ -201,19 +247,32 @@ class _LoginState extends State<Login> {
                         _authMode == AuthMode.Login
                             ? 'Se connecter'
                             : "S'inscrire",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(
+                            fontFamily: "PlayfairDisplay",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22,
+                            color: Colors.white70
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  ),
+                  SizedBox(height: 8),
                   ButtonTheme(
                     minWidth: 200,
-                    child: RaisedButton(
-                      color: Colors.white12,
+                    child:
+                    Container(
+                      width: 300,
+                      child: RaisedButton(
+                      color: Hexcolor("#774780"),
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                        ' Page ${_authMode == AuthMode.Login ? "Inscription" : 'Login'}',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        '  ${_authMode == AuthMode.Login ? "S'inscrire " : 'Se connecter'}',
+                        style: TextStyle(
+                            fontFamily: "PlayfairDisplay",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22,
+                            color: Colors.white70),
                       ),
                       onPressed: () {
                         setState(() {
@@ -222,26 +281,33 @@ class _LoginState extends State<Login> {
                               : AuthMode.Login;
                         });
                       },
-                    ),
+                    ),),
                   ),
 
-                  SizedBox(height: 16),
+                  SizedBox(height: 8),
                   ButtonTheme(
                     minWidth: 200,
-                    child: RaisedButton(
-                      color: Colors.white12,
+                    child: Container(
+                      width: 300,
+                      child: RaisedButton(
+                      color: Hexcolor("#774780"),
                       padding: EdgeInsets.all(10.0),
-                      onPressed: () {
-                        navigateToSubPage(context);
-                      },
-                      child: Text(
+                        onPressed: () {
+                          showAlertDialog(context);
+                        },
+                         child: Text(
                         _authMode == AuthMode.Login
-                            ? "Visualiser l'App"
-                            : "Visualiser l'App",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                            ? "Visualiser l'Application"
+                            : "Visualiser l'Application",
+                        style: TextStyle(
+                            fontFamily: "PlayfairDisplay",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22,
+                            color: Colors.white70),
                       ),
-                    ),
+                    ),),
                   ),
+                  SizedBox(height: 60),
                 ],
               ),
             ),
@@ -250,6 +316,53 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+}
+
+showAlertDialog(BuildContext context) {
+
+  // set up the button
+  Widget okButton = FlatButton(
+    child: Text("Se connecter",
+      style: TextStyle(
+        fontSize: 17,
+        color: Hexcolor("#774780"),
+      ),),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+  Widget continueButton = FlatButton(
+    child: Text("Continuer",
+    style: TextStyle(
+      fontSize: 17,
+      color: Hexcolor("#774780"),
+    ),
+    ),
+    onPressed:  () {
+      navigateToSubPage(context);
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    backgroundColor: Hexcolor('#FFFFF2'),
+    shape: RoundedRectangleBorder(
+        borderRadius:
+        BorderRadius.circular(20.0)),
+    title: Text("Merci pour utiliser cette application"),
+    content: Text("En continuant sans connexion vous pouvez découvrire l'application mais non pas créer des CV.\n\nInscrivez vous pour une meilleure expérience !"),
+    actions: [
+      okButton,
+      continueButton
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
 
 Future navigateToSubPage(context) async {

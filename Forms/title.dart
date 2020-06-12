@@ -6,10 +6,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../drawer.dart';
+import '../finFormulaire.dart';
 
 
 class TitreCv extends StatelessWidget {
-
   final db = Firestore.instance;
   final Titre titre;
   TitreCv({Key key, @required this.titre}) : super(key: key);

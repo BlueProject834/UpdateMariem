@@ -48,6 +48,15 @@ class _drawerState extends State<drawer> {
     else
       return notconnected;
   }
+  String isConnected(){
+    String email = user?.email;
+    String connected="Se déconnecter";
+    String notconnected="Se connecter";
+    if(email!=null)
+      return connected;
+    else
+      return notconnected;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +214,7 @@ class _drawerState extends State<drawer> {
                   child: new ListTile(
                       leading: new Icon(Icons.power_settings_new),
                       title: new Text(
-                        "Se déconnecter",
+                        "${isConnected()}",
                         style: TextStyle(
                           color: Colors.black,
                           fontFamily: "PlayfairDisplay",

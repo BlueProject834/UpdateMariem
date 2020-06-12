@@ -1,7 +1,6 @@
-import 'package:cvmakerapp/PageModeleCv2.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:cvmakerapp/screens/pageModelscv.dart';
+//import 'package:cvmakerapp/screens/pageModelscv.dart';
 import 'Forms/title.dart';
 import 'classes/Titre.dart';
 import 'package:open_file/open_file.dart';
@@ -14,26 +13,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pdf/pdf.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'PageModeleCv2.dart';
 import 'pdf.dart';
 
-class pageFinFormulaire extends StatefulWidget {
+class pageFinFormulaire2 extends StatefulWidget {
   // ignore: camel_case_types
 
-
-  pageFinFormulaire({Key key, this.title}) : super(key: key);
+  pageFinFormulaire2({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _pageFinFormulaireState createState() => _pageFinFormulaireState();
+  _pageFinFormulaire2State createState() => _pageFinFormulaire2State();
 }
 
 // ignore: camel_case_types
-class _pageFinFormulaireState extends State<pageFinFormulaire> {
-
+class _pageFinFormulaire2State extends State<pageFinFormulaire2> {
 
   final newTitle = new Titre(null);
-
-  get nomModele => nomModele;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +69,6 @@ class _pageFinFormulaireState extends State<pageFinFormulaire> {
                   ),
                 ),
                 onTap: () async {
-
                   CvView(context);
                   final String dir =
                       (await getApplicationDocumentsDirectory()).path;
@@ -85,9 +80,11 @@ class _pageFinFormulaireState extends State<pageFinFormulaire> {
                       builder: (_) => PdfPreview(path: path),
                     ),
                   );
+
+                  //  Navigator.of(context).push(new MaterialPageRoute(
+                  //      builder: (BuildContext context) => firstModel()));
                 }),
           ),
-
           Container(
             padding: EdgeInsets.only(left: 10.0),
             color: Colors.white,
@@ -183,7 +180,6 @@ class _pageFinFormulaireState extends State<pageFinFormulaire> {
   dynamic dataLangue2;
   dynamic dataInteret1;
   dynamic dataInteret2;
-
 
   Future<dynamic> getDataInfos() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -330,223 +326,48 @@ class _pageFinFormulaireState extends State<pageFinFormulaire> {
 
     pdf.addPage(p.MultiPage(
         pageFormat:
-            PdfPageFormat.a4.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+        PdfPageFormat.a4.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
         crossAxisAlignment: p.CrossAxisAlignment.start,
         build: (p.Context context) => <p.Widget>[
 
-          // on teste s'il existe des infos personnelles
-             dataInfos!=null?
-              p.Container(
-                color: PdfColors.blue,
-                padding: p.EdgeInsets.all(10.0),
-                child: p.Row(
-                    mainAxisAlignment: p.MainAxisAlignment.spaceBetween,
-                    children: <p.Widget>[
-                      p.Column(children: <p.Widget>[
-                        p.Center(
-                          child: p.Text(
-                           "${dataInfos['Prénom']!= null || dataInfos['Nom'] != null ? "${dataInfos['Prénom']} ${dataInfos['Nom']}" : "\n" }" ,
-                            style: p.TextStyle(color: PdfColors.white),
-                            textScaleFactor: 2,
-                          ),
-                        ),
-                        p.Padding(padding: const p.EdgeInsets.all(20.0)),
-                      ]),
-                    ]
-                ),
-              )
-                 // Sinon
-                 : p.Text(''),
-              p.Padding(padding: const p.EdgeInsets.all(10)),
-
-          dataInfos!=null?
-          p.Container(
-                // color: PdfColors.black,
-                child: p.Column(
-                  crossAxisAlignment: p.CrossAxisAlignment.start,
-                  children: <p.Widget>[
-
-                    dataInfos['Num Tél'] != "" ?
-                    p.Text('Tel : ${dataInfos['Num Tél']}') : p.Text(' '),
-
-                    dataInfos['Email'] != "" ?
-                    p.Text('Email : ${dataInfos['Email']}'): p.Text(' '),
-
-                    dataInfos['Adresse'] != "" ?
-                    p.Text('Adresse : ${dataInfos['Code Postal']}, ${dataInfos['Adresse']}'): p.Text(' '),
-
-                    dataInfos['Nationalité'] != "" ?
-                    p.Text('${dataInfos['Nationalité']}'): p.Text(' '),
-
-                    dataInfos['Etat Civil'] != "" ?
-                    p.Text('${dataInfos['Etat Civil']}'): p.Text(' '),
-
-                    dataInfos['Permis'] != "" ?
-                    p.Text('Permis : ${dataInfos['Permis']}'): p.Text(' '),
-
-                  ],
-                ),
-              ):p.Text(""),
-              p.Container(
-                height: 30.0,
-              ),
-          dataFormation != null || dataFormation2 != null ?
-              p.Header(
-                  level: 1, child: p.Text("FORMATION", textScaleFactor: 2)): p.Text(""),
-          dataFormation != null || dataFormation2 != null ?
-          p.Container(
-                child: p.Column(
-                  children: <p.Widget>[
-                    dataFormation != null ?
-                    p.Wrap(
-                      spacing: 40.0,
-                      children: <p.Widget>[
-                        p.Container(
-                          //     color: PdfColors.grey,
-                          width: 70.0,
-                          height: 20.0,
-                          child: p.Text(' ${dataFormation['Année fin']!="" && dataFormation['Année du début']!=""? "${dataFormation['Année du début']} - ${dataFormation['Année fin']} ": "${dataFormation['Année du début']}  ${dataFormation['Année fin']}"}'),
-                        ),
-                        p.Container(
-                            //       color: PdfColors.grey,
-                            width: 355.0,
-                            child: p.Column(
-                              children: [
-                                p.Text(
-                                    "${dataFormation['Diplôme'] != "" ? dataFormation['Diplôme']: ""}"),
-                                p.Text(
-                                  "${dataFormation['Institut'] != "" ? dataFormation['Institut']: ""}"),
-                                p.Text(
-                                    "${dataFormation['Description'] != "" ? dataFormation['Description']: ""}"),
-
-                              ])),
-                      ],
-                    ): p.Text(""),
-                    p.Padding(padding: const p.EdgeInsets.all(10)),
-                    dataFormation2 != null ?
-                    p.Wrap(
-                      spacing: 40.0,
-                      children: <p.Widget>[
-                        p.Container(
-                          //     color: PdfColors.grey,
-                          width: 70.0,
-                          height: 20.0,
-                          child: p.Text(' ${dataFormation2['Année fin']!="" && dataFormation2['Année du début']!=""? "${dataFormation2['Année du début']} - ${dataFormation2['Année fin']} ": "${dataFormation2['Année du début']}  ${dataFormation2['Année fin']}"}'),
-                        ),
-                        p.Container(
-                          //       color: PdfColors.grey,
-                            width: 355.0,
-                            child: p.Column(
-                                children: [
-                                  p.Text(
-                                      "${dataFormation2['Diplôme'] != "" ? dataFormation2['Diplôme']: ""}"),
-                                  p.Text(
-                                      "${dataFormation2['Institut'] != "" ? dataFormation2['Institut']: ""}"),
-                                  p.Text(
-                                      "${dataFormation2['Description'] != "" ? dataFormation2['Description']: ""}"),
-
-                                ]
-                            )
-                        ),
-                      ],
-                    ) : p.Text( ' '),
-                    p.Padding(padding: const p.EdgeInsets.all(10)),
-                  ],
-                ),
-              ): p.Text(' '),
-              p.Padding(padding: const p.EdgeInsets.all(10)),
-
-          dataCompetence1 != null || dataCompetence2 != null  ?
-          p.Header(
-                  level: 1, child: p.Text('COMPETENCES', textScaleFactor: 2)
-          ): p.Text(""),
-          dataCompetence1 != null || dataCompetence2 != null  ?
-          p.Column(
-                crossAxisAlignment: p.CrossAxisAlignment.start,
-                children: <p.Widget>[
-                  dataCompetence1 != null ?
-                  p.Text(
-                      "${dataCompetence1['Titre']!="" ? '${dataCompetence1['Titre']} \n  ${dataCompetence1['Description']}' :"" }"): p.Text(""),
-                  dataCompetence1 != null ?
-                  p.Text(
-                      "${dataCompetence2['Titre']!="" ? '${dataCompetence2['Titre']} \n  ${dataCompetence2['Description']}' :"" }"): p.Text(""),
-                ],
-              ): p.Text(""),
-
-              p.Padding(padding: const p.EdgeInsets.all(10)),
-
-              dataLangue1 != null || dataLangue2 != null ?
-              p.Header(level: 1, child: p.Text('LANGUES', textScaleFactor: 2)
-              ): p.Text(""),
-
-          dataLangue1 != null || dataLangue2 != null ?
+          p.Wrap(
+            children: <p.Widget>[
               p.Column(
-                crossAxisAlignment: p.CrossAxisAlignment.start,
-                children: <p.Widget>[
-                  dataLangue1 != null ?
-                  p.Text('${dataLangue1['Langue'] != "" ?  '${dataLangue1['Langue']}   : ${dataLangue1['Niveau']}' : "" }') : p.Text(""),
-                  dataLangue2 != null ?
-                  p.Text('${dataLangue2['Langue'] != "" ?  '${dataLangue2['Langue']}   : ${dataLangue2['Niveau']}' : "" }') : p.Text(""),
-                ],
-              ): p.Text(""),
-
-              p.Padding(padding: const p.EdgeInsets.all(10)),
-
-             dataInteret1 != null || dataInteret2 != null ?
-              p.Header(
-                  level: 1,
-                  child: p.Text("CENTRES D'INTERET", textScaleFactor: 2)): p.Text(""),
-             dataInteret1 != null || dataInteret2 != null ?
-              p.Column(
-                crossAxisAlignment: p.CrossAxisAlignment.start,
-                children: <p.Widget>[
-                  dataInteret1 != null ?
-                  p.Text(' ${dataInteret1['Titre'] != "" ? "${dataInteret1['Titre']} \n   ${dataInteret1['Description']}" : "" }'): p.Text(""),
-                  dataInteret2 != null ?
-                  p.Text(' ${ dataInteret2['Titre'] != "" ? "${dataInteret2['Titre']} \n   ${dataInteret2['Description']}" : "" }'): p.Text(""),
-                ],
-              ): p.Text(""),
-            ]));
-    //save PDF
-  }
-
-
-
-  CvView2(context) {
-
-    pdf.addPage(p.MultiPage(
-      pageFormat:
-      PdfPageFormat.a4.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
-      crossAxisAlignment: p.CrossAxisAlignment.start,
-      build: (p.Context context) => <p.Widget>[
-
-        p.Wrap(
-          children: <p.Widget>[
-            p.Column(
                 children: <p.Widget>[
                   p.Container(
-                    width: 200,
+                    width: 160,
                     height: 700,
-                    color: PdfColors.red,
-                    child: p.Text(" hello"),
+                    color: PdfColors.teal,
+                    child: p.Column(children: <p.Widget>[
+                      p.Center(
+                        child: p.Text(
+                          "${dataInfos['Prénom']!= null || dataInfos['Nom'] != null ? "${dataInfos['Prénom']} \n ${dataInfos['Nom']}" : "\n" }" ,
+                          style: p.TextStyle(color: PdfColors.white),
+                          textScaleFactor: 2,
+                        ),
+                      ),
+                      p.Padding(padding: const p.EdgeInsets.all(20.0)),
+                    ]),
                   ),
                 ]
-            ),
-            p.Column(
-              children: <p.Widget>[
-                p.Container(
-                    color: PdfColors.blue
-                ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              p.Column(
+                 children: <p.Widget>[
+                   p.Container(
+                      width: 300,
+                     height: 700,
+                    color: PdfColors.getColor("index")
+                   ),
+                 ],
+              ),
+            ],
+          ),
 
 
 
-
-        // on teste s'il existe des infos personnelles
-        /*         dataInfos!=null?
+/*
+          // on teste s'il existe des infos personnelles
+          dataInfos!=null?
           p.Container(
             color: PdfColors.red,
             padding: p.EdgeInsets.all(10.0),
@@ -556,7 +377,7 @@ class _pageFinFormulaireState extends State<pageFinFormulaire> {
                   p.Column(children: <p.Widget>[
                     p.Center(
                       child: p.Text(
-                        "${dataInfos['Prénom']!= null || dataInfos['Nom'] != null ? "${dataInfos['Prénom']} ${dataInfos['Nom']}" : "\n" }" ,
+                        "${dataInfos['Prénom']!= null || dataInfos['Nom'] != null ? "${dataInfos['Prénom']} \n ${dataInfos['Nom']}" : "\n" }" ,
                         style: p.TextStyle(color: PdfColors.white),
                         textScaleFactor: 2,
                       ),
@@ -717,8 +538,10 @@ class _pageFinFormulaireState extends State<pageFinFormulaire> {
               p.Text(' ${ dataInteret2['Titre'] != "" ? "${dataInteret2['Titre']} \n   ${dataInteret2['Description']}" : "" }'): p.Text(""),
             ],
           ): p.Text(""),
-       */ ],
-    ),
+       */
+
+        ],
+      ),
     );
   }
 }

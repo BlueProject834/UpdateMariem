@@ -2,20 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-import '../drawer.dart';
 import 'package:cvmakerapp/classes/Cv.dart';
 import 'package:cvmakerapp/classes/Titre.dart';
 import 'package:cvmakerapp/Forms/title.dart';
+import 'drawer.dart';
+import 'modeleCv2.dart';
 
-class PageModelsCv extends StatefulWidget {
-  PageModelsCv({Key key, this.title}) : super(key: key);
+class PageModelsCv2 extends StatefulWidget {
+  PageModelsCv2({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _PageModelsCvState createState() => _PageModelsCvState();
+  _PageModelsCv2State createState() => _PageModelsCv2State();
 }
 
-class _PageModelsCvState extends State<PageModelsCv> {
+class _PageModelsCv2State extends State<PageModelsCv2> {
 
   final db= Firestore.instance;
 
@@ -56,7 +57,7 @@ class _PageModelsCvState extends State<PageModelsCv> {
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot modele = snapshot.data.documents[index];
-                 //nomModele = modele['nom'];
+                //nomModele = modele['nom'];
                 return Stack(
                   children: <Widget>[
                     Column(
@@ -92,57 +93,9 @@ class _PageModelsCvState extends State<PageModelsCv> {
                           padding: EdgeInsets.only(top: 40.0, bottom: 40.0),
                           child: GestureDetector(
                             onTap: () async {
-
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                        backgroundColor: Hexcolor('#FFFFF2'),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(20.0)), //this right here
-                                      child: Container(
-                                        height: 200,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text("Donner un nom au cv"),
-                                              TextField(
-                                                controller: Controller,
-                                                autofocus: true,
-                                                decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    hintText: 'exemple '),
-                                              ),
-                                              SizedBox(
-                                                width: 320.0,
-                                                child: RaisedButton(
-                                                  onPressed: () {
-                                                    newCv.nomCV=Controller.text;
-                                                    createRecord();
-                                                   // Navigator.pop(context),
-                                                    // go to form page
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(builder: (context) => TitreCv(titre: newTitle)));
-                                                  },
-                                                  child: Text(
-                                                    "Enregistrer",
-                                                    style: TextStyle(color: Colors.white),
-                                                  ),
-                                                  color: Hexcolor('#774781'),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  });
-
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => pageFinFormulaire2()));
                             },
                             child: Image.network(
                               '${modele['image']}',
@@ -170,11 +123,10 @@ class _PageModelsCvState extends State<PageModelsCv> {
     await db.collection("userData")
         .document(uid).collection("Cv").document(uid).setData({
       'nomCv': newCv.nomCV,
-      'modeleCv': 'Cv classique',
+      'modeleCv': nomModele,
     });
   }
 
 
 
 }
-

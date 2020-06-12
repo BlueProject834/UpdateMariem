@@ -50,7 +50,8 @@ class Home extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundImage: AssetImage('assets/images/logo1.jpg'),
                         radius: 77.0,
-                      )),
+                      )
+                  ),
                   const Card(
                       elevation: 0,
                       color: Colors.transparent,
@@ -76,11 +77,6 @@ class Home extends StatelessWidget {
             Center(
               child: MesCVBoutton(),
             ),
-            Center(
-
-                //child: CvFooterImage(),
-
-                ),
           ],
         ),
       ),
@@ -93,7 +89,7 @@ class Home extends StatelessWidget {
 class CreerCVBoutton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
 
     return Container(
       margin: EdgeInsets.only(top: 60.0),
@@ -102,21 +98,13 @@ class CreerCVBoutton extends StatelessWidget {
       child: RaisedButton(
         shape: new RoundedRectangleBorder(
           borderRadius: new BorderRadius.circular(18.0),
-
-          // side: BorderSide(color: Colors.black)
         ),
-
         color: Hexcolor('#774781'),
-
-        //hoverColor: Colors.black,
-
         textColor: Colors.white,
-
         onPressed: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => PageModelsCv()));
         },
-
         child: Text(
           "Créer un CV",
           style: TextStyle(
